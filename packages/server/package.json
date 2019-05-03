@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node -r esm src/index.js",
     "dev": "nodemon --exec yarn start"
   },
   "dependencies": {
