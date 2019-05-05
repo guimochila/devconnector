@@ -3,6 +3,8 @@ import express, { json, urlencoded } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import userRouter from './resources/user/user.router';
+import { signup } from './utils/auth';
+import { developmentErrors, productionErrros } from './utils/errorHandler';
 
 const app = express();
 
@@ -14,6 +16,14 @@ app.use(urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 // Routes
+app.use('/api/signup', signup);
 app.use('/api/user', userRouter);
+
+// Error Handler - Catch errors
+if (process.env.NODE_ENV === 'development') {
+  app.use(developmentErrors);
+}
+
+app.use(productionErrros);
 
 export default app;
