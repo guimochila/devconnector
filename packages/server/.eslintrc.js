@@ -4,4 +4,7 @@ module.exports = {
   },
   extends: ['airbnb-base', 'prettier'],
   plugins: ['prettier'],
+  rules: {
+    'consistent-return': 0,
+  },
 };
