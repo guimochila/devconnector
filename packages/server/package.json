@@ -8,7 +8,9 @@
   "private": true,
   "scripts": {
     "start": "node -r esm src/index.js",
-    "dev": "nodemon --exec yarn start"
+    "dev": "nodemon --exec yarn start",
+    "test": "NODE_ENV=testing jest --forceExit --detectOpenHandles --silent",
+    "test-auth": "yarn test -t Authentication:"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -30,6 +32,7 @@
     "eslint-config-prettier": "^4.2.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-prettier": "^3.0.1",
+    "jest": "^24.8.0",
     "nodemon": "^1.19.0",
     "prettier": "^1.17.0"
   },
@@ -37,5 +40,8 @@
     "singleQuote": true,
     "semi": true,
     "trailingComma": "all"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
