@@ -3,7 +3,10 @@ import logger from './logger';
 
 export default async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+    });
   } catch (e) {
     logger.error(`MongoDB: ${e}`);
   }
