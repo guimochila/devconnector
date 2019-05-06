@@ -21,7 +21,7 @@ export const signup = async (req, res, next) => {
 
   const error = [];
 
-  if (!isAlphanumeric(blacklist(name, ' '))) {
+  if (!name || !isAlphanumeric(blacklist(name, ' '))) {
     error.push(
       'Name is required and only alpha numeric characters are allowed.',
     );

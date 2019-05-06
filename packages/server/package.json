@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node -r esm src/index.js",
     "dev": "nodemon --exec yarn start",
-    "test": "NODE_ENV=testing jest --forceExit --detectOpenHandles --silent",
+    "test": "NODE_ENV=testing jest --forceExit --detectOpenHandles",
     "test-auth": "yarn test -t Authentication:"
   },
   "dependencies": {
@@ -27,6 +27,9 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "babel-jest": "^24.8.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.2.0",
