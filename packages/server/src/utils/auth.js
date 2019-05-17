@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import {
   blacklist,
@@ -11,7 +12,7 @@ import User from '../resources/user/user.model';
 
 export const generateToken = user => {
   return jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-    expiresIn: '15m',
+    expiresIn: '1d',
   });
 };
 
@@ -57,4 +58,55 @@ export const signup = async (req, res, next) => {
   }
 };
 
-export const signin = () => {};
+export const decodeToken = (req, res, next) => {
+  const token = req.header('Authorization');
+
+  try {
+    const user = jwt.verify(token.split('Bearer ')[1], process.env.JWT_SECRET);
+    req.user = user;
+    next();
+  } catch (e) {
+    next();
+  }
+};
+
+export const isLoggedIn = (req, res, next) => {
+  if (!req.user) {
+    return res.status(403).send();
+  }
+
+  next();
+};
+
+export const signin = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password || !isEmail(email)) {
+      return res
+        .status(401)
+        .json({ data: { error: 'Invalid email or password.' } });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res
+        .status(401)
+        .json({ data: { error: 'Invalid email or password' } });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res
+        .status(401)
+        .json({ data: { error: 'Invalid email or password' } });
+    }
+
+    const token = generateToken(user);
+    return res.status(201).json({ token });
+  } catch (e) {
+    next(e);
+  }
+};
