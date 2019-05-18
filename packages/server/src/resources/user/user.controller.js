@@ -8,3 +8,12 @@ export const me = async (req, res, next) => {
     next(e);
   }
 };
+
+export const removeUser = async (req, res, next) => {
+  try {
+    await userService.removeUser(req.user.id);
+    res.status(202).send();
+  } catch (e) {
+    next(e);
+  }
+};
