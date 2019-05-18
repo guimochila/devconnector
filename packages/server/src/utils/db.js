@@ -6,6 +6,7 @@ export default async () => {
     await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useCreateIndex: true,
+      useFindAndModify: false,
     });
   } catch (e) {
     logger.error(`MongoDB: ${e}`);
