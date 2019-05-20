@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { model, Schema } from 'mongoose';
 import isEmail from 'validator/lib/isEmail';
+import Profile from '../profile/profile.model';
 
 const userSchema = new Schema({
   name: {
@@ -53,6 +54,11 @@ userSchema.pre('save', async function hashPassword(next) {
   } catch (e) {
     return next(e);
   }
+});
+
+userSchema.pre('remove', function removeDocs(next) {
+  Profile.deleteOne({ user: this._id }).exec();
+  next();
 });
 
 export default model('User', userSchema);
