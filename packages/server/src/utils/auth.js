@@ -78,6 +78,13 @@ export const isLoggedIn = (req, res, next) => {
   next();
 };
 
+export const confirmOwnership = (doc, user) => {
+  if (!doc.author.equals(user.id)) {
+    return false;
+  }
+  return true;
+};
+
 export const signin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
