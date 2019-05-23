@@ -7,7 +7,7 @@ export const createPost = async (req, res, next) => {
   if (!title || !text) {
     return res
       .status(400)
-      .json({ data: { error: 'Title and text fields are required' } });
+      .json({ error: 'Title and text fields are required' });
   }
 
   try {
@@ -36,7 +36,7 @@ export const getPostBySlug = async (req, res, next) => {
     const post = await postService.getPostBySlug(req.params.slug);
 
     if (!post) {
-      return res.status(404).json({ data: { error: 'Post not found' } });
+      return res.status(404).json({ error: 'Post not found' });
     }
 
     res.json({ data: { post } });
@@ -50,13 +50,13 @@ export const removePost = async (req, res, next) => {
     const post = await postService.getPostById(req.params.id);
 
     if (!post) {
-      return res.status(404).json({ data: { error: 'Post not found' } });
+      return res.status(404).json({ error: 'Post not found' });
     }
 
     if (!confirmOwnership(post, req.user)) {
-      return res.status(401).json({
-        data: { error: 'You must be the owner of the post to delete it.' },
-      });
+      return res
+        .status(401)
+        .json({ error: 'You must be the owner of the post to delete it.' });
     }
 
     await postService.removePost(post);
@@ -74,7 +74,7 @@ export const likePost = async (req, res, next) => {
     const post = await postService.getPostById(req.params.id);
 
     if (!post) {
-      return res.status(404).json({ data: { error: 'Post not found' } });
+      return res.status(404).json({ error: 'Post not found' });
     }
 
     operator = post.likes.includes(req.user.id) ? '$pull' : '$addToSet';

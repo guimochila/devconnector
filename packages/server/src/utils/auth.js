@@ -39,7 +39,7 @@ export const signup = async (req, res, next) => {
   }
 
   if (error.length) {
-    return res.status(400).json({ data: { error } });
+    return res.status(400).json({ error });
   }
 
   email = normalizeEmail(email, { all_lowercase: true });
@@ -52,7 +52,7 @@ export const signup = async (req, res, next) => {
     return res.status(201).json({ token });
   } catch (e) {
     if (e.message.includes('E11000 duplicate key error collection')) {
-      return res.status(400).json({ data: { error: 'Email already in use' } });
+      return res.status(400).json({ error: 'Email already in use' });
     }
     return next(e);
   }
@@ -90,25 +90,19 @@ export const signin = async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password || !isEmail(email)) {
-      return res
-        .status(401)
-        .json({ data: { error: 'Invalid email or password.' } });
+      return res.status(401).json({ error: 'Invalid email or password.' });
     }
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res
-        .status(401)
-        .json({ data: { error: 'Invalid email or password' } });
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res
-        .status(401)
-        .json({ data: { error: 'Invalid email or password' } });
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     const token = generateToken(user);
