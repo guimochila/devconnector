@@ -6,7 +6,7 @@ export const getMyProfile = async (req, res, next) => {
   const profile = await profileService.findProfile(req.user.id);
 
   if (!profile) {
-    return res.status(404).json({ data: { error: 'Profile not found' } });
+    return res.status(404).json({ error: 'Profile not found' });
   }
 
   res.json({ data: { profile } });
@@ -16,7 +16,7 @@ export const createProfile = async (req, res, next) => {
   if (!req.body.status || !req.body.skills) {
     return res
       .status(400)
-      .json({ data: { error: 'Field: status or skills is missing' } });
+      .json({ error: 'Field: status or skills is missing' });
   }
 
   // Sanitization
@@ -60,13 +60,13 @@ export const getProfiles = async (req, res, next) => {
 export const getProfileById = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(404).json({ data: { error: 'Profile not found' } });
+      return res.status(404).json({ error: 'Profile not found' });
     }
 
     const profile = await profileService.findProfile(req.params.id);
 
     if (!profile) {
-      return res.status(404).json({ data: { error: 'Profile not found' } });
+      return res.status(404).json({ error: 'Profile not found' });
     }
 
     res.json({ data: { profile } });

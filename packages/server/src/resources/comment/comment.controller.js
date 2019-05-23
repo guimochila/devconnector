@@ -4,7 +4,7 @@ import * as commentService from './comment.services';
 export const addComment = async (req, res, next) => {
   const { text } = req.body;
   if (!text) {
-    res.status(400).json({ data: { error: 'Text field is required. ' } });
+    res.status(400).json({ error: 'Text field is required. ' });
   }
 
   const newComment = {
@@ -26,13 +26,13 @@ export const removeComment = async (req, res, next) => {
     const comment = await commentService.getComment(req.params.id);
 
     if (!comment) {
-      return res.status(404).json({ data: { error: 'Comment not found.' } });
+      return res.status(404).json({ error: 'Comment not found.' });
     }
 
     if (!confirmOwnership(comment, req.user)) {
-      return res.status(401).json({
-        data: { error: 'You must be the owner to remove the comment.' },
-      });
+      return res
+        .status(401)
+        .json({ error: 'You must be the owner to remove the comment.' });
     }
 
     await commentService.removeComment(comment);
