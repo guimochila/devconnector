@@ -10,5 +10,9 @@
   ],
   "devDependencies": {
     "lerna": "^3.13.2"
+  },
+  "scripts": {
+    "ci:test": "lerna run ci:test",
+    "bootstrap": "lerna bootstrap"
   }
 }

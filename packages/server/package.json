@@ -10,7 +10,8 @@
     "start": "node -r esm src/index.js",
     "dev": "nodemon --exec yarn start",
     "test": "NODE_ENV=testing jest --forceExit --detectOpenHandles",
-    "test-auth": "yarn test -t Authentication:"
+    "test:auth": "yarn test -t Authentication:",
+    "ci:test": "NODE_ENV=testing jest --ci --runInBand --forceExit --detectOpenHandles"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
