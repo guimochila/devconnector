@@ -1,17 +1,16 @@
 version: 2.1
 jobs:
   build:
-    working_directory: .
     docker:
       - image: circleci/node:11.7.0
-  steps:
-    - checkout
-    - run:
-      name: Install Lerna
-      command: yarn add -g lerna
-    - run:
-      name: Install packages
-      command: yarn install --freeze-lockfile
+    steps:
+      - checkout
+      - run:
+          name: Install packages
+          command: yarn install --freeze-lockfile
+      - run:
+          name: Lerna Boostrap
+          command: yarn run bootstrap
 
-    # Run tests
-    - run: yarn ci:test
+      # Run tests
+      - run: yarn ci:test
