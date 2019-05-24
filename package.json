@@ -10,5 +10,8 @@
   ],
   "devDependencies": {
     "lerna": "^3.13.2"
+  },
+  "scripts": {
+    "ci:test": "learn run ci:test"
   }
 }
