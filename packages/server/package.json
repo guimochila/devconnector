@@ -9,11 +9,14 @@
   "scripts": {
     "start": "node -r esm src/index.js",
     "dev": "nodemon --exec yarn start",
-    "test": "NODE_ENV=testing jest --forceExit --detectOpenHandles",
+    "test": "NODE_ENV=test jest --forceExit --detectOpenHandles",
     "test:auth": "yarn test -t Authentication:",
-    "ci:test": "NODE_ENV=testing jest --ci --runInBand --forceExit --detectOpenHandles"
+    "test:users": "yarn test -t UserControllers:",
+    "test:profiles": "yarn test -t ProfileControllers:",
+    "ci:test": "NODE_ENV=test jest --ci --runInBand --forceExit --detectOpenHandles"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
@@ -23,7 +26,6 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.9",
     "morgan": "^1.9.1",
-    "request": "^2.88.0",
     "slugs": "^0.1.3",
     "validator": "^10.11.0",
     "winston": "^3.2.1"
@@ -46,8 +48,5 @@
     "singleQuote": true,
     "semi": true,
     "trailingComma": "all"
-  },
-  "jest": {
-    "testEnvironment": "node"
   }
 }
