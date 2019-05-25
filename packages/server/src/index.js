@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import app from './server';
 import connectDB from './utils/db';
+import logger from './utils/logger';
 
 const start = async () => {
   // Connect to database
@@ -9,8 +10,7 @@ const start = async () => {
   const port = process.env.PORT;
 
   app.listen(port, () => {
-    /* eslint-disable-next-line */
-    console.log(`Server started on http://localhost:${port}/`);
+    logger.info(`Server started on http://localhost:${port}/`);
   });
 };
 
