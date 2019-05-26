@@ -13,7 +13,15 @@ jobs:
           name: Lerna Boostrap
           command: yarn run bootstrap
 
+      - run:
+          name: Install JUnit coverage reporter
+          command: yarn add --dev jest-junit
+      - run:
+          name: Run tests with JUnit as reporter
+          command: jest --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT: 'reports/junit/js-test-results.xml'
       # Run tests
       - run: yarn ci:test
       - store_test_results:
-          path: test-results
+          path: packages/server/test-results
