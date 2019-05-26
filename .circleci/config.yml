@@ -13,7 +13,12 @@ jobs:
           name: Lerna Boostrap
           command: yarn run bootstrap
 
-      # Run tests
+      - run:
+          name: Install JUnit coverage reporter
+          command: |
+            - cd packages/server
+            - yarn add --dev jest-junit
+
       - run: yarn ci:test
       - store_test_results:
           path: packages/server/test-results
