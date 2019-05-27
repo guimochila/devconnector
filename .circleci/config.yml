@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  codecov: codecov/codecov@1.0.4
 jobs:
   build:
     docker:
@@ -12,12 +14,9 @@ jobs:
       - run:
           name: Lerna Boostrap
           command: yarn run bootstrap
-      - run: |
-          cd packages/server
-          yarn add -g codecov
+
       - run: yarn ci:test
       - store_test_results:
           path: packages/server/coverage
-      - store_artifacts:
-          path: packages/server/coverage
-      - run: codecov
+      - codecov/upload:
+          flags: backend,unittest
