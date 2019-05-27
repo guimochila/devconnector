@@ -13,7 +13,8 @@
     "test:auth": "yarn test -t Authentication:",
     "test:users": "yarn test -t UserControllers:",
     "test:profiles": "yarn test -t ProfileControllers:",
-    "ci:test": "NODE_ENV=test jest --ci --runInBand --forceExit --detectOpenHandles --reporters=default --reporters=jest-junit"
+    "ci:test": "NODE_ENV=test jest --ci --runInBand --forceExit --detectOpenHandles --reporters=default --reporters=jest-junit",
+    "uploadCoverage": "codecov"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -35,6 +36,7 @@
     "@babel/preset-env": "^7.4.4",
     "@types/jest": "^24.0.13",
     "babel-jest": "^24.8.0",
+    "codecov": "^3.5.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.2.0",

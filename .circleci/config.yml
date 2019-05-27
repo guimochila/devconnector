@@ -13,14 +13,11 @@ jobs:
           name: Lerna Boostrap
           command: yarn run bootstrap
 
-      - run: |
-          yarn global add codecov
-
       - run: yarn ci:test
-      - run: |
-          cd packages/server
-          codecov
-      - store_artifacts:
-          path: packages/server/coverage/clover.xml
+      - run:
+          name: Upload CodeCoverage to Codecov
+          command: |
+            cd packages/server
+            yarn run uploadCoverage
       - store_test_results:
           path: packages/server/coverage/clover.xml
