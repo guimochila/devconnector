@@ -14,7 +14,7 @@ jobs:
           command: yarn run bootstrap
 
       - run: |
-          yarn add -g codecov
+          yarn global add codecov
 
       - run: yarn ci:test
       - run: |
