@@ -5,7 +5,7 @@ module.exports = {
   testEnvironment: 'node',
   setupFilesAfterEnv: ['<rootDir>/test-db-setup.js'],
   collectCoverage: true,
-  coverageDirectory: './test-results',
+  coverageDirectory: './coverage/',
   collectCoverageFrom: [
     '**/src/**/*.js',
     '!**/__tests__/**',
