@@ -14,14 +14,13 @@ jobs:
           command: yarn run bootstrap
 
       - run: |
-          cd packages/server
-          yarn add -D codecov
+          yarn add -g codecov
 
       - run: yarn ci:test
       - run: |
           cd packages/server
           codecov
       - store_artifacts:
-          path: ./coverage/clover.xml
+          path: packages/server/coverage/clover.xml
       - store_test_results:
           path: packages/server/coverage/clover.xml
