@@ -13,8 +13,8 @@ jobs:
           name: Lerna Boostrap
           command: yarn run bootstrap
       - run: |
-        cd packages/server
-        yarn add -g codecov
+          cd packages/server
+          yarn add -g codecov
       - run: yarn ci:test
       - store_test_results:
           path: packages/server/coverage
