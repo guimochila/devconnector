@@ -13,6 +13,8 @@
     "test:auth": "yarn test -t Authentication:",
     "test:users": "yarn test -t UserControllers:",
     "test:profiles": "yarn test -t ProfileControllers:",
+    "test:integration": "yarn test --testPathPattern=\\.int\\.test\\.js",
+    "test:coverage": "yarn test --coverage",
     "ci:test": "NODE_ENV=test jest --ci --runInBand --forceExit --detectOpenHandles --reporters=default --reporters=jest-junit",
     "uploadCoverage": "codecov"
   },
@@ -42,6 +44,7 @@
     "eslint-config-prettier": "^4.2.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-prettier": "^3.0.1",
+    "faker": "^4.1.0",
     "jest": "^24.8.0",
     "jest-junit": "^6.4.0",
     "nodemon": "^1.19.0",
