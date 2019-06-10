@@ -1,3 +1,5 @@
+import faker from 'faker';
+
 export default function setup() {
   const req = {
     body: {},
@@ -23,4 +25,12 @@ export default function setup() {
   const next = jest.fn();
 
   return { req, res, next };
+}
+
+export function generateUser() {
+  return {
+    name: faker.name,
+    email: faker.internet.email,
+    password: faker.internet.password,
+  };
 }
