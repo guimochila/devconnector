@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:11.7.0
+      - image: circleci/mongo:4.1.9-ram
     steps:
       - checkout
       - run:
@@ -12,5 +13,11 @@ jobs:
           name: Lerna Boostrap
           command: yarn run bootstrap
 
-      # Run tests
       - run: yarn ci:test
+      - run:
+          name: Upload CodeCoverage to Codecov
+          command: |
+            cd packages/server
+            yarn run uploadCoverage
+      - store_test_results:
+          path: packages/server/coverage/clover.xml

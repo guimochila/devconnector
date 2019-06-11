@@ -9,35 +9,7 @@ import {
   signin,
   signup,
 } from '../auth';
-
-require('dotenv').config();
-
-function setup() {
-  const req = {
-    body: {},
-  };
-  const res = {};
-  Object.assign(res, {
-    status: jest.fn(
-      function status() {
-        return this;
-      }.bind(res),
-    ),
-    json: jest.fn(
-      function json() {
-        return this;
-      }.bind(res),
-    ),
-    send: jest.fn(
-      function send() {
-        return this;
-      }.bind(res),
-    ),
-  });
-  const next = jest.fn();
-
-  return { req, res, next };
-}
+import setup from '../testUtils';
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -237,7 +209,7 @@ describe('Authentication:', () => {
     expect(res.json).toHaveBeenCalledWith({ error: 'Email already in use' });
   });
 
-  test('it shoudl signin user', async () => {
+  test('it should signin user', async () => {
     const { req, res, next } = setup();
 
     req.body = {
@@ -252,8 +224,6 @@ describe('Authentication:', () => {
 
     await signin(req, res, next);
 
-    expect(res.status).toHaveBeenCalledTimes(1);
-    expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith({ token: expect.any(String) });
   });
 });

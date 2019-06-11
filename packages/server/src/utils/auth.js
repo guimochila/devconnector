@@ -106,7 +106,7 @@ export const signin = async (req, res, next) => {
     }
 
     const token = generateToken(user);
-    return res.status(201).json({ token });
+    return res.json({ token });
   } catch (e) {
     next(e);
   }
