@@ -29,8 +29,8 @@ export default function setup() {
 
 export function generateUser() {
   return {
-    name: faker.name,
-    email: faker.internet.email,
-    password: faker.internet.password,
+    name: faker.name.findName(),
+    email: faker.internet.email(),
+    password: faker.internet.password(),
   };
 }
