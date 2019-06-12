@@ -4,3 +4,4 @@ logs/
 yarn-error.log
 .DS_Store
 coverage/
+bundle.*
