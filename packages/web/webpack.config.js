@@ -1,5 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = {
   entry: {
@@ -9,9 +10,9 @@ const config = {
     extensions: ['.ts', '.tsx', '.js'],
   },
   output: {
-    path: path.join(__dirname, 'public/assets'),
+    path: path.join(__dirname, 'public/static'),
     filename: '[name].js',
-    publicPath: '/assets/',
+    publicPath: '/static/',
   },
   devtool: 'source-map',
   module: {
@@ -41,14 +42,28 @@ const config = {
     ],
   },
   devServer: {
-    contentBase: path.resolve(__dirname, 'public'),
-    publicPath: '/assets/',
+    contentBase: path.join(__dirname, 'public'),
+    publicPath: '/static/',
     historyApiFallback: true,
     proxy: {
       '/api': 'http://localhost:3000/api',
     },
   },
-  plugins: [new MiniCssExtractPlugin({ filename: 'style.css' })],
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'style.css',
+    }),
+    // new HtmlWebpackPlugin({
+    //   template: path.join(__dirname, 'public', 'index.html'),
+    // }),
+  ],
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: 'all',
+  //     name: false,
+  //   },
+  //   runtimeChunk: true,
+  // },
 };
 
 module.exports = config;
