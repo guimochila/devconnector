@@ -9,18 +9,23 @@
   "private": true,
   "scripts": {
     "start": "webpack --mode development",
-    "dev": "webpack-dev-server --mode development --hot",
-    "lint": "tslint --project ."
+    "dev": "webpack-dev-server --mode development",
+    "lint": "tslint --project .",
+    "clean": "rimraf dist/"
   },
   "devDependencies": {
     "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.4",
+    "@types/react-redux": "^7.1.0",
     "@types/react-router": "^5.0.1",
+    "@types/react-router-dom": "^4.3.3",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^3.0.0",
+    "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.7.0",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.6.0",
+    "rimraf": "^2.6.3",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
     "tslint": "^5.17.0",
@@ -35,6 +40,9 @@
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-router-dom": "^5.0.1"
+    "react-redux": "^7.1.0",
+    "react-router-dom": "^5.0.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   }
 }
