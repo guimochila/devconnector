@@ -1,13 +1,24 @@
 import React, { Fragment, FunctionComponent, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import useFormValidation from '../../hooks/useFormValidation';
 import { changeAlert } from '../../actionCreators/changeAlert.js';
+import { register } from '../../actionCreators/changeAuth.js';
 import PropTypes from 'prop-types';
 import nanoid from 'nanoid';
 
 interface IProps {
   changeAlert: (message: string, alertType: string, id: string) => {};
+  register: ({
+    name,
+    email,
+    password,
+  }: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {};
+  isAuthenticated: boolean;
 }
 
 const initialState = {
@@ -17,7 +28,11 @@ const initialState = {
   confirmPassword: '',
 };
 
-const Register: FunctionComponent<IProps> = ({ changeAlert }) => {
+const Register: FunctionComponent<IProps> = ({
+  changeAlert,
+  register,
+  isAuthenticated,
+}) => {
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -50,8 +65,12 @@ const Register: FunctionComponent<IProps> = ({ changeAlert }) => {
       return;
     }
 
-    changeAlert('Form sent', 'success', nanoid(10));
+    register({ name, email, password });
   };
+
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <Fragment>
@@ -114,9 +133,15 @@ const Register: FunctionComponent<IProps> = ({ changeAlert }) => {
 
 Register.propTypes = {
   changeAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
 export default connect(
-  null,
-  { changeAlert },
+  mapStateToProps,
+  { changeAlert, register },
 )(Register);
