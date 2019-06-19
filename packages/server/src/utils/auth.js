@@ -49,7 +49,8 @@ export const signup = async (req, res, next) => {
     const user = await User.create({ email, name, password });
     const token = generateToken(user);
 
-    return res.status(201).json({ token });
+    res.cookie('token', token);
+    return res.status(201).json({ status: 'Ok' });
   } catch (e) {
     if (e.message.includes('E11000 duplicate key error collection')) {
       return res.status(400).json({ error: 'Email already in use' });
@@ -59,10 +60,10 @@ export const signup = async (req, res, next) => {
 };
 
 export const decodeToken = (req, res, next) => {
-  const token = req.header('Authorization');
+  const token = req.cookies;
 
   try {
-    const user = jwt.verify(token.split('Bearer ')[1], process.env.JWT_SECRET);
+    const user = jwt.verify(token, process.env.JWT_SECRET);
     req.user = user;
     next();
   } catch (e) {
@@ -106,7 +107,8 @@ export const signin = async (req, res, next) => {
     }
 
     const token = generateToken(user);
-    return res.json({ token });
+    res.cookie('token', token);
+    return res.json({ status: 'Ok' });
   } catch (e) {
     next(e);
   }

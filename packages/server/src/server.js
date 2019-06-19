@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { json, urlencoded } from 'express';
 import helmet from 'helmet';
@@ -10,12 +11,20 @@ import { developmentErrors, productionErrros } from './utils/errorHandler';
 
 const app = express();
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 // Middlwares
 app.use(helmet());
 app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
-if (process.env.NODE_ENV === 'development') {
+app.use(
+  cookieParser(null, {
+    httpOnly: true,
+    secure: isProduction,
+  }),
+);
+if (!isProduction) {
   app.use(morgan('dev'));
 }
 
@@ -30,7 +39,7 @@ app.use('/api/profile', profileRouter);
 app.use('/api/post', postRouter);
 
 // Error Handler - Catch errors
-if (process.env.NODE_ENV === 'development') {
+if (!isProduction) {
   app.use(developmentErrors);
 }
 
