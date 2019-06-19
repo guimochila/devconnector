@@ -21,6 +21,11 @@ export default function setup() {
         return this;
       }.bind(res),
     ),
+    cookie: jest.fn(
+      function cookie() {
+        return this;
+      }.bind(res),
+    ),
   });
   const next = jest.fn();
 
@@ -29,7 +34,7 @@ export default function setup() {
 
 export function generateUser() {
   return {
-    name: faker.name.findName(),
+    name: faker.name.firstName(),
     email: faker.internet.email(),
     password: faker.internet.password(),
   };

@@ -31,7 +31,7 @@ describe('[Authentication: - Signup]', () => {
   test('it should register user', async () => {
     const res = await api.post('/signup', user);
     expect(res.status).toBe(201);
-    expect(res.data).toEqual({ token: expect.any(String) });
+    expect(res.data).toEqual({ status: 'Ok' });
   });
 
   test('it should NOT register user with email in use', async () => {
@@ -59,9 +59,8 @@ describe('[Authentication: - Signup]', () => {
 
     const res = await api.post('/signin', data);
     expect(res.status).toBe(200);
-    expect(res.data).toEqual({ token: expect.any(String) });
-    // eslint-disable-next-line
-    token = res.data.token;
+    expect(res.data).toEqual({ status: 'Ok' });
+    token = res.headers['set-cookie'];
   });
 });
 
@@ -75,9 +74,10 @@ describe('[User: Integration]', () => {
     const {
       data: { data },
     } = await api.get('/user/me', {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Cookie: token,
+      },
     });
-
     expect(data.user).toMatchObject({
       email: user.email.toLocaleLowerCase(),
       name: user.name,
@@ -97,7 +97,9 @@ describe('[Profile: Integration]', () => {
     };
 
     const { data: res } = await api.post('/profile', profileData, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Cookie: token,
+      },
     });
     expect(res.data.profile).toMatchObject({
       ...profileData,

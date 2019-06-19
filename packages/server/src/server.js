@@ -12,6 +12,7 @@ import { developmentErrors, productionErrros } from './utils/errorHandler';
 const app = express();
 
 const isProduction = process.env.NODE_ENV === 'production';
+const isTest = process.env.NODE_ENV === 'test';
 
 // Middlwares
 app.use(helmet());
@@ -24,7 +25,7 @@ app.use(
     secure: isProduction,
   }),
 );
-if (!isProduction) {
+if (!isProduction && !isTest) {
   app.use(morgan('dev'));
 }
 
@@ -39,7 +40,7 @@ app.use('/api/profile', profileRouter);
 app.use('/api/post', postRouter);
 
 // Error Handler - Catch errors
-if (!isProduction) {
+if (!isProduction && !isTest) {
   app.use(developmentErrors);
 }
 
