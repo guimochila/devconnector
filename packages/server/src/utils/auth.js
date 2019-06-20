@@ -49,7 +49,7 @@ export const signup = async (req, res, next) => {
     const user = await User.create({ email, name, password });
     const token = generateToken(user);
 
-    res.cookie('token', token);
+    res.cookie('_token', token);
     return res.status(201).json({ status: 'Ok' });
   } catch (e) {
     if (e.message.includes('E11000 duplicate key error collection')) {
@@ -107,9 +107,14 @@ export const signin = async (req, res, next) => {
     }
 
     const token = generateToken(user);
-    res.cookie('token', token);
+    res.cookie('_token', token);
     return res.json({ status: 'Ok' });
   } catch (e) {
     next(e);
   }
+};
+
+export const logout = (req, res) => {
+  res.clearCookie('_token');
+  res.json({ status: 'Bye' });
 };

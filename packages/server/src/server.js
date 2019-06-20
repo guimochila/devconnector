@@ -6,7 +6,7 @@ import morgan from 'morgan';
 import postRouter from './resources/post/post.router';
 import profileRouter from './resources/profile/profile.router';
 import userRouter from './resources/user/user.router';
-import { decodeToken, signin, signup } from './utils/auth';
+import { decodeToken, signin, signup, logout } from './utils/auth';
 import { developmentErrors, productionErrros } from './utils/errorHandler';
 
 const app = express();
@@ -35,6 +35,7 @@ app.use(decodeToken);
 // Routes
 app.post('/api/signup', signup);
 app.post('/api/signin', signin);
+app.get('/api/logout', logout);
 app.use('/api/user', userRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/post', postRouter);
