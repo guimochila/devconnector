@@ -2,7 +2,7 @@ import nanoid from 'nanoid';
 import { Dispatch } from 'redux';
 import { ActionTypes } from '../types';
 export interface Alert {
-  id: string;
+  id?: string;
   type: string;
   message: string;
 }
