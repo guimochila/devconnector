@@ -6,6 +6,7 @@
     "no-console": false,
     "jsx-no-lambda": false,
     "member-ordering": false,
-    "no-shadowed-variable": false
+    "no-shadowed-variable": false,
+    "interface-name": false
   }
 }

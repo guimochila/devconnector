@@ -6,10 +6,12 @@ import configureStore from './store';
 
 const store = configureStore();
 
-const Root = (): JSX.Element => (
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
+function Root(): JSX.Element {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
 
 render(<Root />, document.getElementById('app'));
