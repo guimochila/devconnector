@@ -28,7 +28,7 @@ describe('Authentication:', () => {
     const { req, res, next } = setup();
     const id = 123;
     req.cookies = {
-      token: generateToken({ id }),
+      _token: generateToken({ id }),
     };
 
     decodeToken(req, res, next);
@@ -176,7 +176,9 @@ describe('Authentication:', () => {
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledTimes(1);
-    expect(res.json).toHaveBeenCalledWith({ status: 'Ok' });
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({ user: { ...req.body, id: 123 } }),
+    );
   });
 
   it('should not signup user with existent email', async () => {
@@ -203,7 +205,7 @@ describe('Authentication:', () => {
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledTimes(1);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Email already in use' });
+    expect(res.json).toHaveBeenCalledWith({ error: ['Email already in use'] });
   });
 
   test('it should signin user', async () => {

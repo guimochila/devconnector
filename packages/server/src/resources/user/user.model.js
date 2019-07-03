@@ -56,6 +56,12 @@ userSchema.pre('save', async function hashPassword(next) {
   }
 });
 
+userSchema.methods.toJSON = function toJSON() {
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
+
 userSchema.pre('remove', function removeDocs(next) {
   Profile.deleteOne({ user: this._id }).exec();
   next();

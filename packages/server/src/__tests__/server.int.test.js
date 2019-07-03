@@ -31,13 +31,13 @@ describe('[Authentication: - Signup]', () => {
   test('it should register user', async () => {
     const res = await api.post('/signup', user);
     expect(res.status).toBe(201);
-    expect(res.data).toEqual({ status: 'Ok' });
+    expect(res.data.user).toBeTruthy();
   });
 
   test('it should NOT register user with email in use', async () => {
     const error = await api.post('/signup', user).catch(e => e.response);
     expect(error.status).toBe(400);
-    expect(error.data).toEqual({ error: expect.any(String) });
+    expect(error.data).toEqual({ error: expect.any(Array) });
   });
 
   test('it should NOT signin with wrong credentials', async () => {
@@ -48,7 +48,7 @@ describe('[Authentication: - Signup]', () => {
 
     const error = await api.post('/signin', data).catch(e => e.response);
     expect(error.status).toBe(401);
-    expect(error.data).toEqual({ error: 'Invalid email or password' });
+    expect(error.data).toEqual({ error: ['Invalid email or password'] });
   });
 
   test('it should signin with correct credentials', async () => {
