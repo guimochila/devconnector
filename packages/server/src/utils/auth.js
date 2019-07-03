@@ -50,20 +50,20 @@ export const signup = async (req, res, next) => {
     const token = generateToken(user);
 
     res.cookie('_token', token);
-    return res.status(201).json({ status: 'Ok' });
+    return res.status(201).json({ user });
   } catch (e) {
     if (e.message.includes('E11000 duplicate key error collection')) {
-      return res.status(400).json({ error: 'Email already in use' });
+      return res.status(400).json({ error: ['Email already in use'] });
     }
     return next(e);
   }
 };
 
 export const decodeToken = (req, res, next) => {
-  const { token } = req.cookies;
+  const { _token } = req.cookies;
 
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET);
+    const user = jwt.verify(_token, process.env.JWT_SECRET);
     req.user = user;
     next();
   } catch (e) {
@@ -91,19 +91,19 @@ export const signin = async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password || !isEmail(email)) {
-      return res.status(401).json({ error: 'Invalid email or password.' });
+      return res.status(401).json({ error: ['Invalid email or password.'] });
     }
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(401).json({ error: ['Invalid email or password'] });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(401).json({ error: ['Invalid email or password'] });
     }
 
     const token = generateToken(user);
