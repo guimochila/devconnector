@@ -1,22 +1,16 @@
-import React, { FunctionComponent, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { logout } from '../../actionCreators/changeAuth.js';
-
+import { Link } from 'react-router-dom';
+import { StoreState } from '../../store';
+import { logout, Authenticate } from '../../store/auth';
 import './Nav.css';
 
-interface IProps {
-  isAuthenticated: boolean;
-  loading: boolean;
-  logout(): void;
+interface NavProps {
+  auth: Authenticate;
+  logout: () => void;
 }
 
-const Navbar: FunctionComponent<IProps> = ({
-  isAuthenticated,
-  loading,
-  logout,
-}) => {
+const Navbar = ({ auth, logout }: NavProps): JSX.Element => {
   const authLinks = (
     <ul>
       <li>
@@ -49,22 +43,13 @@ const Navbar: FunctionComponent<IProps> = ({
           <i className="fas fa-code" /> DevConnector
         </Link>
       </h1>
-      {!loading && (
-        <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
-      )}
+      {auth.isAuthenticated ? authLinks : guestLinks}
     </nav>
   );
 };
 
-Navbar.propTypes = {
-  logout: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
-  loading: PropTypes.bool.isRequired,
-};
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  loading: state.auth.loading,
+const mapStateToProps = (state: StoreState) => ({
+  auth: state.auth,
 });
 
 export default connect(

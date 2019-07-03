@@ -1,30 +1,29 @@
-import React, { FunctionComponent, Fragment, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { Fragment, useState, FormEvent } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import * as actions from '../../actionCreators/changeAuth';
+import { Link, Redirect } from 'react-router-dom';
+import { StoreState } from '../../store';
+import { Authenticate, login } from '../../store/auth';
 
-export interface IProps {
+export interface LoginProps {
   login: (email: string, password: string) => void;
-  isAuthenticated: boolean;
+  auth: Authenticate;
 }
 
-const Login: FunctionComponent<IProps> = ({ login, isAuthenticated }) => {
+const Login = ({ login, auth }: LoginProps): JSX.Element => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const onSubmit = async e => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     login(email, password);
   };
 
-  if (isAuthenticated) {
+  if (auth.isAuthenticated) {
     return <Redirect to="/dashboard" />;
   }
 
   return (
     <Fragment>
-      <div className="alert alert-danger">Invalid credentials</div>
       <h1 className="large text-primary">Sign In</h1>
       <p className="lead">
         <i className="fas fa-user" /> Sign into Your Account
@@ -58,16 +57,11 @@ const Login: FunctionComponent<IProps> = ({ login, isAuthenticated }) => {
   );
 };
 
-Login.propTypes = {
-  login: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
-};
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
+const mapStateToProps = (state: StoreState) => ({
+  auth: state.auth,
 });
 
 export default connect(
   mapStateToProps,
-  { login: actions.login },
+  { login },
 )(Login);

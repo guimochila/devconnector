@@ -1,74 +1,48 @@
-import React, { Fragment, FunctionComponent, useState } from 'react';
+import React, { FormEvent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import useFormValidation from '../../hooks/useFormValidation';
-import { changeAlert } from '../../actionCreators/changeAlert.js';
-import { register } from '../../actionCreators/changeAuth.js';
-import PropTypes from 'prop-types';
-import nanoid from 'nanoid';
+import useForm from '../../hooks/useForm';
+import { StoreState } from '../../store';
+import { setAlert } from '../../store/alerts';
+import { Authenticate, register, UserInput } from '../../store/auth';
 
-interface IProps {
-  changeAlert: (message: string, alertType: string, id: string) => {};
-  register: ({
-    name,
-    email,
-    password,
-  }: {
-    name: string;
-    email: string;
-    password: string;
-  }) => {};
-  isAuthenticated: boolean;
+interface RegisterProps {
+  setAlert: (message: string, type: string) => void;
+  register: ({  }: UserInput) => void;
+  auth: Authenticate;
 }
 
-const initialState = {
-  email: '',
-  name: '',
-  password: '',
-  confirmPassword: '',
-};
+interface InitalState {
+  email: string;
+  name: string;
+  password: string;
+  confirmPassword: string;
+}
 
-const Register: FunctionComponent<IProps> = ({
-  changeAlert,
-  register,
-  isAuthenticated,
-}) => {
-  const [data, setData] = useState({
+function Register({ setAlert, register, auth }: RegisterProps): JSX.Element {
+  const [values, handleChange] = useForm<InitalState>({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
-  const [values, handleChanges] = useFormValidation(initialState);
 
-  const {
-    name,
-    email,
-    password,
-    confirmPassword,
-  }: {
-    name: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-  } = data;
-
-  const onChange = e => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
-
-  const onSubmit = e => {
+  const onSubmit = (e: FormEvent<HTMLElement>): void => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      changeAlert('Passwords do not match.', 'danger', nanoid(10));
+    if (values.password !== values.confirmPassword) {
+      setAlert('Passwords do not match.', 'danger');
       return;
     }
 
-    register({ name, email, password });
+    register({
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    });
   };
 
-  if (isAuthenticated) {
+  if (auth.isAuthenticated) {
     return <Redirect to="/dashboard" />;
   }
 
@@ -85,8 +59,8 @@ const Register: FunctionComponent<IProps> = ({
             placeholder="Name"
             name="name"
             required={true}
-            value={name}
-            onChange={e => onChange(e)}
+            value={values.name}
+            onChange={handleChange}
           />
         </div>
         <div className="form-group">
@@ -94,8 +68,8 @@ const Register: FunctionComponent<IProps> = ({
             type="email"
             placeholder="Email Address"
             name="email"
-            value={email}
-            onChange={e => onChange(e)}
+            value={values.email}
+            onChange={handleChange}
           />
           <small className="form-text">
             This site uses Gravatar so if you want a profile image, use a
@@ -108,8 +82,8 @@ const Register: FunctionComponent<IProps> = ({
             placeholder="Password"
             name="password"
             minLength={6}
-            value={password}
-            onChange={e => onChange(e)}
+            value={values.password}
+            onChange={handleChange}
           />
         </div>
         <div className="form-group">
@@ -118,8 +92,8 @@ const Register: FunctionComponent<IProps> = ({
             placeholder="Confirm Password"
             name="confirmPassword"
             minLength={6}
-            value={confirmPassword}
-            onChange={e => onChange(e)}
+            value={values.confirmPassword}
+            onChange={handleChange}
           />
         </div>
         <input type="submit" className="btn btn-primary" value="Register" />
@@ -129,19 +103,13 @@ const Register: FunctionComponent<IProps> = ({
       </p>
     </Fragment>
   );
-};
+}
 
-Register.propTypes = {
-  changeAlert: PropTypes.func.isRequired,
-  register: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
-};
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
+const mapStateToProps = (state: StoreState) => ({
+  auth: state.auth,
 });
 
 export default connect(
   mapStateToProps,
-  { changeAlert, register },
+  { setAlert, register },
 )(Register);
