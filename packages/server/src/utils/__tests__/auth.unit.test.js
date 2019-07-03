@@ -24,15 +24,12 @@ describe('Authentication:', () => {
     expect(user.id).toBe(id);
   });
 
-  test('it should decode token if header authorization is in req', () => {
+  test('it should decode token if cookie contains token', () => {
     const { req, res, next } = setup();
     const id = 123;
-    req.header = jest.fn(function header(name) {
-      if (name === 'Authorization') {
-        const token = generateToken({ id });
-        return `Bearer ${token}`;
-      }
-    });
+    req.cookies = {
+      token: generateToken({ id }),
+    };
 
     decodeToken(req, res, next);
     expect(req.user).toBeTruthy();
@@ -179,7 +176,7 @@ describe('Authentication:', () => {
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledTimes(1);
-    expect(res.json).toHaveBeenCalledWith({ token: expect.any(String) });
+    expect(res.json).toHaveBeenCalledWith({ status: 'Ok' });
   });
 
   it('should not signup user with existent email', async () => {
@@ -224,6 +221,6 @@ describe('Authentication:', () => {
 
     await signin(req, res, next);
 
-    expect(res.json).toHaveBeenCalledWith({ token: expect.any(String) });
+    expect(res.json).toHaveBeenCalledWith({ status: 'Ok' });
   });
 });
