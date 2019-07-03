@@ -16,7 +16,12 @@ const isTest = process.env.NODE_ENV === 'test';
 
 // Middlwares
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:8080',
+    credentials: true,
+  }),
+);
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(
